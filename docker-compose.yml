@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+
+  backend:
+    build:
+      context: ./console-backend
+      dockerfile: Dockerfile
+    entrypoint: ['/usr/src/app/entrypoint.sh']
+    ports:
+      - 5004:5000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - PYTHONDONTWRITEBYTECODE 1
+      - PYTHONUNBUFFERED 1
+      - FLASK_APP=src/__init__.py
+      - FLASK_ENV=development
+      - APP_SETTINGS=src.config.DevelopmentConfig
+
+  frontend:
+    build:
+      context: ./console-frontend
+      dockerfile: Dockerfile
+    ports:
+      - 3001:3000
+
+  memgraph:
+    build:
+      context: ./memgraph-platform
+      dockerfile: Dockerfile
+    volumes:
+      - mg_lib:/var/lib/memgraph memgraph/memgraph-platform
+    ports:
+      - 7687:7687
+      - 3000:3000
+
+volumes:
+  mg_lib:

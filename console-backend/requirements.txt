@@ -1,0 +1,6 @@
+flask==2.0.2
+flask-restx==0.5.1
+flask-cors==3.0.10
+pymgclient==1.2.0
+jsons==1.6.1
+pytest==6.2.5
